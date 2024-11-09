@@ -2,14 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pressureview</title>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="./src/main.ts"></script>
+    <div id="app">
+        <div id="windy"></div>
+    </div>
+    <script>
+        const windyEl = document.querySelector('#windy')
+
+        windyEl.style.position = 'absolute'
+        windyEl.style.top = '-80px'
+        windyEl.style.left = '-80px'
+        windyEl.style.right = '-80px'
+        windyEl.style.bottom = '-80px'
+        windyEl.style.width = 'auto'
+        windyEl.style.height = 'auto'
+
+        const options = {
+            key: 'tX73FtupEdcUsq6OclTCOfFJCuF2bhuP', 
+            verbose: true,
+            lat: 52.4,
+            lon: -2.1,
+            zoom: 3,
+        };
+
+        window.pressureOverlayHasBeenDrawn = false
+
+        windyInit(options, (windyAPI) => {
+            window.windyAPI = windyAPI;
+
+            windyAPI.broadcast.once('redrawFinished', (event) => {
+              if (event.overlay === 'pressure') {
+                console.log('Pressure overlay has been drawn')
+                window.pressureOverlayHasBeenDrawn = true
+              }
+            })
+
+            // set pressure as overlay
+            windyAPI.store.set('overlay', 'pressure');
+
+            // remove labels
+            const map = windyAPI.map;
+
+            let labelsLayer
+            map.eachLayer(layer => {
+              // debugger
+              if ('tilesUrl' in layer && typeof layer.tilesUrl == 'string' && layer.tilesUrl.includes('/labels/')) {
+                labelsLayer = layer
+              }
+            })
+            if (labelsLayer) {
+              console.log('Removing labels layer')
+              map.removeLayer(labelsLayer)
+            }
+        });
+    </script>
   </body>
 </html>
