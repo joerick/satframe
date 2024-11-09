@@ -17,13 +17,23 @@ windyEl.style.height = 'auto'
 
 const options = {
     key: 'tX73FtupEdcUsq6OclTCOfFJCuF2bhuP', 
+    verbose: true,
     lat: 52.4,
     lon: -2.1,
-    zoom: 4,
+    zoom: 3,
 };
 
+window.pressureOverlayHasBeenDrawn = false
+
 windyInit(options, (windyAPI: any) => {
-    (window as any).windyAPI = windyAPI;
+    window.windyAPI = windyAPI;
+
+    windyAPI.broadcast.once('redrawFinished', (event: any) => {
+      if (event.overlay === 'pressure') {
+        console.log('Pressure overlay has been drawn')
+        window.pressureOverlayHasBeenDrawn = true
+      }
+    })
 
     // set pressure as overlay
     windyAPI.store.set('overlay', 'pressure');
@@ -43,3 +53,4 @@ windyInit(options, (windyAPI: any) => {
       map.removeLayer(labelsLayer)
     }
 });
+
