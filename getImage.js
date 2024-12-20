@@ -1,10 +1,17 @@
 const { chromium, firefox, webkit } = require('playwright');
 const { fileURLToPath, pathToFileURL } = require('url');
+const path = require('path');
 
 const filePath = pathToFileURL('./index.html').href;
 
 (async () => {
-  const browser = await firefox.launch();
+  let browserPath = undefined
+  // use /usr/bin/chromium if it exists
+  if (path.existsSync('/usr/bin/chromium')) {
+    browserPath = '/usr/bin/chromium'
+  }
+
+  const browser = await chromium.launch({executablePath: browserPath});
   const context = await browser.newContext({
     viewport: { width: 800, height: 480 },
   });
