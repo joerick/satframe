@@ -14,7 +14,11 @@ Add to `/etc/crontab`:
 
 # Run satframe as user `joerick` every 30 minutes
 */30 * * * * joerick /home/joerick/satframe/run.sh
+```
 
-# refresh the screen on boot as well
-@reboot sudo -u joerick /home/joerick/satframe/run.sh
+Add to `/etc/rc.local`
+
+```
+# run satframe
+sudo -u joerick /home/joerick/satframe/run.sh
 ```
