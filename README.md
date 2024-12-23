@@ -16,7 +16,7 @@ Add to `/etc/crontab`:
 */30 * * * * joerick /home/joerick/satframe/run.sh
 ```
 
-Add to `/etc/rc.local`
+Add to `/etc/rc.local` before exit:
 
 ```
 # run satframe
