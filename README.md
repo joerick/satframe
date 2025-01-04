@@ -10,15 +10,11 @@ Add to `/etc/crontab`:
 
 ```
 # Reboot the system daily at 3 AM
-0 3 * * * root /sbin/reboot
+0  3    * * *   root    /sbin/reboot
 
 # Run satframe as user `joerick` every 30 minutes
-*/30 * * * * joerick /home/joerick/satframe/run.sh
-```
+*/30 *  * * *   joerick /home/joerick/satframe/run.sh
 
-Add to `/etc/rc.local` before exit:
-
-```
-# run satframe
-sudo -u joerick /home/joerick/satframe/run.sh
+# refresh the screen on boot as well
+@reboot         joerick /home/joerick/satframe/run.sh
 ```
