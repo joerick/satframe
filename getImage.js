@@ -1,11 +1,20 @@
 const { chromium, firefox, webkit } = require('playwright');
-const { fileURLToPath, pathToFileURL } = require('url');
 const fs = require('fs');
-
-const filePath = pathToFileURL('./index.html').href;
+var finalhandler = require('finalhandler');
+var serveStatic = require('serve-static');
+var http = require('http');
 
 (async () => {
   let browserPath = undefined
+
+  console.log('>> Starting local http server');
+  const serve = serveStatic("./");
+  const server = http.createServer(function(req, res) {
+    const done = finalhandler(req, res);
+    serve(req, res, done);
+  });
+  server.listen(41721);
+
   // use /usr/bin/chromium if it exists
   if (fs.existsSync('/usr/bin/chromium')) {
     browserPath = '/usr/bin/chromium'
@@ -14,12 +23,13 @@ const filePath = pathToFileURL('./index.html').href;
   console.log('>> Launching browser with path:', browserPath);
   const browser = await chromium.launch({executablePath: browserPath});
 
-  console.log('>> Loading page:', filePath);
+  const url = 'http://localhost:41721/index.html'
+  console.log('>> Loading page:', url);
   const context = await browser.newContext({
     viewport: { width: 800, height: 480 },
   });
   const page = await context.newPage();
-  await page.goto(filePath);
+  await page.goto(url);
 
   console.log('>> Waiting for the animation to load');
   await page.waitForFunction(() => window.pressureOverlayHasBeenDrawn);
@@ -32,4 +42,7 @@ const filePath = pathToFileURL('./index.html').href;
 
   console.log('>> Closing browser');
   await browser.close();
+
+  console.log('>> Stopping local http server');
+  server.close();
 })();
