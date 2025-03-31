@@ -18,5 +18,8 @@ pip install \
     pillow==10.4.0 \
     numpy==2.2.0
 
-
 (cd ../inky && ./install.sh)
+
+# deps for node
+sudo apt install npm chromium
+npm install
