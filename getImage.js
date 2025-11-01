@@ -15,8 +15,10 @@ var http = require('http');
   });
   server.listen(41721);
 
-  // use /usr/bin/chromium if it exists
-  if (fs.existsSync('/usr/bin/chromium')) {
+  // use /usr/bin/chromium-headless-shell if it exists
+  if (fs.existsSync('/usr/bin/chromium-headless-shell')) {
+    browserPath = '/usr/bin/chromium-headless-shell'
+  } else if (fs.existsSync('/usr/bin/chromium')) {
     browserPath = '/usr/bin/chromium'
   }
 
