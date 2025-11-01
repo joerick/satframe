@@ -2,6 +2,8 @@
 
 cd "$(dirname "$0")"
 
+set -o errexit
+set -o xtrace
 
 if [ ! -d "env" ]; then
     echo "Creating virtual environment"
@@ -22,5 +24,5 @@ pip install \
 (export PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple/ && cd ../inky && ./install.sh)
 
 # deps for node
-sudo apt install npm chromium
+sudo apt install npm chromium chromium-headless-shell
 npm install
