@@ -15,10 +15,11 @@ sudo apt install libwebpmux3 libwebpdemux2 liblcms2-2 libopenjp2-7 libopenblas0-
 
 # pin some versions that work
 pip install \
+    -i https://www.piwheels.org/simple/ \
     pillow==10.4.0 \
     numpy==2.2.0
 
-(cd ../inky && ./install.sh)
+(export PIP_EXTRA_INDEX_URL=https://www.piwheels.org/simple/ && cd ../inky && ./install.sh)
 
 # deps for node
 sudo apt install npm chromium
