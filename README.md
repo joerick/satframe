@@ -1,5 +1,9 @@
 # satframe
 
+## Image
+
+Raspbian Lite, 32bit, bookworm.
+
 ## System config
 
 Clone this and [inky](https://github.com/pimoroni/inky) into the home folder.
